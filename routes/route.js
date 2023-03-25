@@ -23,7 +23,7 @@ router.delete('/del/:id', async (req, res) => {
     response.status(500).send({ message: e.message });
   }
 });
-router.get('/all', async (req, res) => {
+router.get('/time', async (req, res) => {
   alarm
     .find()
     .then((a) => res.json(a))
