@@ -11,7 +11,6 @@ router.post('/saveAlarm', async (req, res) => {
     .catch((err) => console.log(err));
   console.log(Data);
 });
-module.exports = router;
 
 router.delete('/del/:id', async (req, res) => {
   try {
@@ -37,7 +36,6 @@ router.post('/saveStatusplus', async (req, res) => {
     .catch((err) => console.log(err));
   console.log(Dataplus);
 });
-module.exports = router;
 
 router.post('/saveStatusgun', async (req, res) => {
   const status_gun = req.body.status_gun;
@@ -47,7 +45,6 @@ router.post('/saveStatusgun', async (req, res) => {
     .catch((err) => console.log(err));
   console.log(Datagun);
 });
-module.exports = router;
 
 router.post('/saveStatustun', async (req, res) => {
   const status_tun = req.body.status_tun;
@@ -57,8 +54,17 @@ router.post('/saveStatustun', async (req, res) => {
     .catch((err) => console.log(err));
   console.log(Datatun);
 });
-module.exports = router;
 
+router.post('/createstatusAll', async (req, res) => {
+  const status_tun = ""
+  const status_gun = ""
+  const status_plus = "";
+  const DataAll =new status({status_tun: status_tun,status_plus: status_plus,status_gun: status_gun});
+  await DataAll.save()
+  .then((res) => console.log('added'))
+  .catch((err) => console.log(err));
+console.log(DataAll);
+});
 router.get('/sort-time/:time', (req, res) => {
   const { timeString } = req.params;
   const timeArray = timeString.split(',');
@@ -73,7 +79,8 @@ router.get('/sort-time/:time', (req, res) => {
   res.send(sortedTimeArray);
 });
 
-module.exports = router;
+
+
 
 router.get('/all', async (req, res) => {
   statusplus
@@ -86,4 +93,5 @@ router.get('/all', async (req, res) => {
     .catch((err) => console.log(err));
   statustun.find().then((c) => res.json(c).catch((err) => console.log(err)));
 });
+module.exports = router;
 //test
