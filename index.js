@@ -20,9 +20,9 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-app.get('/', function (req, res) {
-  res.redirect('/');
-});
+// app.get('/', function (req, res) {
+//   res.redirect('/');
+// });
 app.use('/api', alarmtime);
 
 connectDB().then(() => {
