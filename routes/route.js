@@ -77,8 +77,15 @@ router.get('/sort-time/:time', (req, res) => {
     return aDiff - bDiff;
   });
   res.send(sortedTimeArray);
+  
 });
+router.get('/getStatus', async (req, res) => {
+  const checkStatus = await status.findOne();
+  res.send(checkStatus)
+  .then((res) => console.log('added'))
+  .catch((err) => console.log(err));
 
+})
 
 
 
