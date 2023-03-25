@@ -5,5 +5,5 @@ const StatusSchema = new mongoose.Schema({
     status_tun: String
   });
   
-  const Status = mongoose.model('gun', StatusSchema);
+  const Status = mongoose.model('status', StatusSchema);
 module.exports = Status;

@@ -25,6 +25,7 @@ const connectDB = async () => {
 // });
 app.use('/api', alarmtime);
 
+
 connectDB().then(() => {
   app.listen(process.env.PORT, () => {
     console.log('listening for requests');
