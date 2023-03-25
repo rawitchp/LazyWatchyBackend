@@ -86,3 +86,4 @@ router.get('/all', async (req, res) => {
     .catch((err) => console.log(err));
   statustun.find().then((c) => res.json(c).catch((err) => console.log(err)));
 });
+//test
