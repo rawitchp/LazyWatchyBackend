@@ -11,26 +11,22 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose
-  .connect(database, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('MongoDB Connected');
-  })
-  .catch((err) => {
-    console.log('MongoDB not Connected' + err);
-  });
-const db = mongoose.connection;
-db.on('error', (err) => {
-  console.log('Connection Error: ' + err);
-});
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(database);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
 app.get('/', function (req, res) {
   res.redirect('/');
 });
 app.use('/api', alarmtime);
 
-app.listen(process.env.PORT || 4000, () => {
-  console.log('Server is running at port 4000');
+connectDB().then(() => {
+  app.listen(process.env.PORT, () => {
+    console.log('listening for requests');
+  });
 });
