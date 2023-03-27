@@ -121,7 +121,7 @@ router.get('/sort-time', async (req, res) => {
   }
 
   // Send the closest time as response
-  res.send(closestTime.split(' ')[0]);
+  res.send({ alarm: closestTime.split(' ')[0] });
 });
 router.get('/getStatus', async (req, res) => {
   const checkStatus = await status.findOne();
