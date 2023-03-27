@@ -36,6 +36,16 @@ router.post('/saveStatusplus', async (req, res) => {
     .catch((err) => console.log(err));
   console.log(Dataplus);
 });
+router.delete('/delstatus', async (req, res) => {
+  try {
+    // const check = await alarm.findOne({ id: req.params.id });
+    // console.log(req.params);
+    await status.findOneAndRemove({ _id: req.params.id });
+    res.send('delete');
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+  }
+});
 
 router.post('/saveStatusgun', async (req, res) => {
   const status_gun = req.body.status_gun;
@@ -65,19 +75,19 @@ router.post('/createstatusAll', async (req, res) => {
   .catch((err) => console.log(err));
 console.log(DataAll);
 });
-router.get('/sort-time/:time', (req, res) => {
+router.get('/sort-time', (req, res) => {
   const { timeString } = req.params;
   const timeArray = timeString.split(',');
   const sortedTimeArray = timeArray.sort((a, b) => {
-    const aTime = new Date(`2023-03-23T${a}:00`);
+    const aTime = new Date(`${a}:00`);
     const bTime = new Date(`2023-03-23T${b}:00`);
     const currentTime = new Date();
     const aDiff = Math.abs(aTime - currentTime);
     const bDiff = Math.abs(bTime - currentTime);
     return aDiff - bDiff;
   });
-  res.send(sortedTimeArray);
-  
+  res.send(sortedTimeArray[0]);
+
 });
 router.get('/getStatus', async (req, res) => {
   const checkStatus = await status.findOne();
@@ -85,20 +95,24 @@ router.get('/getStatus', async (req, res) => {
   .then((res) => console.log('added'))
   .catch((err) => console.log(err));
 
-})
-
-
-
-router.get('/all', async (req, res) => {
-  statusplus
-    .find()
-    .then((a) => res.json(a))
-    .catch((err) => console.log(err));
-  statusgun
-    .find()
-    .then((b) => res.json(b))
-    .catch((err) => console.log(err));
-  statustun.find().then((c) => res.json(c).catch((err) => console.log(err)));
 });
+
+router.put("/putstatus", async (req, res) => {
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'แก้ไข post'
+  
+
+
+    const oldpost = await status.findone();
+    const newpost = new status({
+        status_tun : oldpost.status_tun,
+        status_gun : oldpost.status_gun,
+        status_plus : oldpost.status_plus
+          
+      });
+      await newpost.save();
+      await status.findoneAndUpdate();
+      response.send("finish");
+  });
 module.exports = router;
 //test
