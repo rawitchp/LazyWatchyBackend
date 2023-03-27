@@ -97,7 +97,7 @@ router.get('/sort-time', async (req, res) => {
     const timeObject = moment().tz('Asia/Bangkok');
     timeObject.hours(hours);
     timeObject.minutes(minutes);
-    timeObject.seconds(0);
+    timeObject.seconds(15);
     timeObject.milliseconds(0);
     return timeObject;
   });
