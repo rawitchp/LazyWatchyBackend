@@ -99,9 +99,9 @@ router.put("/putstatus", async (req, res) => {
 
     const oldpost = await status.findOne();
     const newpost = new status({
-        status_tun : res.body.status_tun,
-        status_gun : res.body.status_gun,
-        status_plus : res.body.status_plus
+        status_tun : res.status_tun,
+        status_gun : res.status_gun,
+        status_plus : res.status_plus
           
       });
       await newpost.save();
