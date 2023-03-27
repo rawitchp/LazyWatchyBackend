@@ -142,7 +142,7 @@ router.get('/sort-time', async (req, res) => {
         closestTime = '0' + closestTime;
       }
       // Send the closest time for the next day as response
-      res.send({ alarm: closestTime });
+      res.send(closestTime);
       return;
     }
   }
@@ -162,7 +162,7 @@ router.get('/sort-time', async (req, res) => {
   }
 
   // Send the closest time as response
-  res.send({ alarm: closestTime });
+  res.send(closestTime);
 });
 router.get('/getStatus', async (req, res) => {
   const checkStatus = await status.findOne();
