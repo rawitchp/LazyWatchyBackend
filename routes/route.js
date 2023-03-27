@@ -3,6 +3,8 @@ let status = require('../schema/status');
 const express = require('express');
 const app = express();
 const router = express.Router();
+const moment = require('moment-timezone');
+
 router.post('/saveAlarm', async (req, res) => {
   const time = req.body.time;
   const Data = new alarm({ time: time });
@@ -82,9 +84,7 @@ router.post('/createStatusAll', async (req, res) => {
 router.get('/sort-time', async (req, res) => {
   const Data = await alarm.find();
   // console.log(Data);
-  const currentTime = new Date().toLocaleString('en-US', {
-    timeZone: 'Asia/Bangkok',
-  });
+  const currentTime = moment().tz('Asia/Bangkok');
   let times = [];
   for (let i = 0; i < Data.length; i++) {
     // console.log(Data[i]);
@@ -94,75 +94,34 @@ router.get('/sort-time', async (req, res) => {
   console.log(currentTime);
   const timeObjects = times.map((time) => {
     const [hours, minutes] = time.split(':');
-    const timeObject = new Date();
-    timeObject.setUTCHours(hours);
-    timeObject.setUTCMinutes(minutes);
-    timeObject.setUTCSeconds(0);
-    timeObject.setUTCMilliseconds(0);
+    const timeObject = moment().tz('Asia/Bangkok');
+    timeObject.hours(hours);
+    timeObject.minutes(minutes);
+    timeObject.seconds(0);
+    timeObject.milliseconds(0);
     return timeObject;
   });
   console.log(timeObjects);
   // Filter out times that have already passed
-  const futureTimes = timeObjects.filter((time) => time > currentTime);
+  const futureTimesToday = timeObjects.filter((time) =>
+    time.isAfter(currentTime)
+  );
 
   // If there are no future times, return an error
-  if (futureTimes.length === 0) {
-    if (futureTimes.length === 0) {
-      // Get the current date in Thailand time zone
-      const currentDate = new Date(currentTime).toLocaleDateString('en-US', {
-        timeZone: 'Asia/Bangkok',
-      });
+  let closestTime = '';
+  if (futureTimesToday.length === 0) {
+    const firstTimeTomorrow = timeObjects[0].add(1, 'day');
+    closestTime = firstTimeTomorrow.format('hh:mm A');
+  } else {
+    // Sort future times in ascending order
+    futureTimesToday.sort((a, b) => a - b);
 
-      // Add one day to the current date
-      const nextDay = new Date(currentDate);
-      nextDay.setDate(nextDay.getDate() + 1);
-
-      // Convert the times for the next day to Date objects in Thailand time zone
-      const nextDayTimeObjects = times.map((time) => {
-        const [hours, minutes] = time.split(':');
-        const timeObject = new Date(nextDay);
-        timeObject.setHours(hours);
-        timeObject.setMinutes(minutes);
-        timeObject.setSeconds(0);
-        timeObject.setMilliseconds(0);
-        return timeObject;
-      });
-
-      // Sort the times for the next day in ascending order
-      nextDayTimeObjects.sort((a, b) => a - b);
-
-      // Get the first time for the next day and convert it back to a string in the Thailand time zone
-      let closestTime = nextDayTimeObjects[0]
-        .toLocaleTimeString('en-US', {
-          timeZone: 'Asia/Bangkok',
-          timeStyle: 'short',
-        })
-        .split(' ')[0];
-      if (closestTime.length == 4) {
-        closestTime = '0' + closestTime;
-      }
-      // Send the closest time for the next day as response
-      res.send({ alarm: closestTime });
-      return;
-    }
-  }
-
-  // Sort future times in ascending order
-  futureTimes.sort((a, b) => a - b);
-
-  // Get the first future time and convert it back to string
-  let closestTime = futureTimes[0]
-    .toLocaleTimeString('en-US', {
-      timeZone: 'Asia/Bangkok',
-      timeStyle: 'short',
-    })
-    .split(' ')[0];
-  if (closestTime.length == 4) {
-    closestTime = closestTime.concat('0');
+    // Get the first future time and format it as a string
+    closestTime = futureTimesToday[0].format('hh:mm A');
   }
 
   // Send the closest time as response
-  res.send({ alarm: closestTime });
+  res.send(closestTime.split(' ')[0]);
 });
 router.get('/getStatus', async (req, res) => {
   const checkStatus = await status.findOne();
