@@ -40,7 +40,7 @@ router.delete('/delstatus', async (req, res) => {
   try {
     // const check = await alarm.findOne({ id: req.params.id });
     // console.log(req.params);
-    await status.removeAll();
+    await status.findOneAndRemove({ _id: req.params.id });
     res.send('delete');
   } catch (e) {
     response.status(500).send({ message: e.message });
