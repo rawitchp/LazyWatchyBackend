@@ -106,7 +106,7 @@ router.put("/putstatus", async (req, res) => {
       });
       await newpost.save();
       await status.findOneAndUpdate();
-      response.send("finish");
+      res.send("finish");
   });
 module.exports = router;
 //test
