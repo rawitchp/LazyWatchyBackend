@@ -36,11 +36,11 @@ router.post('/saveStatusplus', async (req, res) => {
     .catch((err) => console.log(err));
   console.log(Dataplus);
 });
-router.delete('/delstatus', async (req, res) => {
+router.delete('/delStatus', async (req, res) => {
   try {
     // const check = await alarm.findOne({ id: req.params.id });
     // console.log(req.params);
-    await status.deleteRow();
+    await status.findOneAndDelete();
     res.send('delete');
   } catch (e) {
     response.status(500).send({ message: e.message });
@@ -65,7 +65,7 @@ router.post('/saveStatustun', async (req, res) => {
   console.log(Datatun);
 });
 
-router.post('/createstatusAll', async (req, res) => {
+router.post('/createStatusAll', async (req, res) => {
   const status_tun = 0
   const status_gun = 0
   const status_plus = 0;
@@ -91,22 +91,17 @@ router.get('/getStatus', async (req, res) => {
 
 });
 
-router.put("/putstatus", async (req, res) => {
+router.put("/putStatus", async (req, res) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'แก้ไข post'
   
 
 
     const oldpost = await status.findOne();
-    const newpost = new status({
-        status_tun : res.body.status_tun,
-        status_gun : res.body.status_gun,
-        status_plus : res.body.status_plus
-          
-      });
-      await newpost.save();
-      await status.findOneAndUpdate();
-      res.send("finish");
-  });
+      oldpost.status_tun = req.body.status_tun || oldpost.status_tun;
+      oldpost.status_gun = req.body.status_gun || oldpost.status_gun;
+      oldpost.status_plus = req.body.status_plus || oldpost.status_plus;
+      await oldpost.save()
+      res.send(oldpost);
+});
 module.exports = router;
-//test
