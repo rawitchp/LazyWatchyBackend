@@ -66,9 +66,9 @@ router.post('/saveStatustun', async (req, res) => {
 });
 
 router.post('/createstatusAll', async (req, res) => {
-  const status_tun = ""
-  const status_gun = ""
-  const status_plus = "";
+  const status_tun = 0
+  const status_gun = 0
+  const status_plus = 0;
   const DataAll =new status({status_tun: status_tun,status_plus: status_plus,status_gun: status_gun});
   await DataAll.save()
   .then((res) => console.log('added'))
@@ -76,17 +76,11 @@ router.post('/createstatusAll', async (req, res) => {
 console.log(DataAll);
 });
 router.get('/sort-time', (req, res) => {
-  const { timeString } = req.params;
-  const timeArray = timeString.split(',');
-  const sortedTimeArray = timeArray.sort((a, b) => {
-    const aTime = new Date(`${a}:00`);
-    const bTime = new Date(`2023-03-23T${b}:00`);
-    const currentTime = new Date();
-    const aDiff = Math.abs(aTime - currentTime);
-    const bDiff = Math.abs(bTime - currentTime);
-    return aDiff - bDiff;
-  });
-  res.send(sortedTimeArray[0]);
+  let date = new Date()
+  h = date.getHours(),
+
+
+  res.send(h);
 
 });
 router.get('/getStatus', async (req, res) => {
