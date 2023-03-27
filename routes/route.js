@@ -40,7 +40,7 @@ router.delete('/delstatus', async (req, res) => {
   try {
     // const check = await alarm.findOne({ id: req.params.id });
     // console.log(req.params);
-    await status.findOneAndRemove({ _id: req.params.id });
+    await status.removeAll();
     res.send('delete');
   } catch (e) {
     response.status(500).send({ message: e.message });
@@ -97,7 +97,7 @@ router.put("/putstatus", async (req, res) => {
   
 
 
-    const oldpost = await status.findone();
+    const oldpost = await status.findOne();
     const newpost = new status({
         status_tun : oldpost.status_tun,
         status_gun : oldpost.status_gun,
@@ -105,7 +105,7 @@ router.put("/putstatus", async (req, res) => {
           
       });
       await newpost.save();
-      await status.findoneAndUpdate();
+      await status.findOneAndUpdate();
       response.send("finish");
   });
 module.exports = router;
