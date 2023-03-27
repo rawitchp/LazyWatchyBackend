@@ -90,23 +90,3 @@ router.get('/getStatus', async (req, res) => {
   .catch((err) => console.log(err));
 
 });
-
-router.put("/putstatus", async (req, res) => {
-  // #swagger.tags = ['Post']
-  // #swagger.description = 'แก้ไข post'
-  
-
-
-    const oldpost = await status.findOne();
-    const newpost = new status({
-        status_tun : oldpost.status_tun,
-        status_gun : oldpost.status_gun,
-        status_plus : oldpost.status_plus
-          
-      });
-      await newpost.save();
-      await status.findOneAndUpdate();
-      res.send("finish");
-  });
-module.exports = router;
-//test
