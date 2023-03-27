@@ -40,7 +40,7 @@ router.delete('/delstatus', async (req, res) => {
   try {
     // const check = await alarm.findOne({ id: req.params.id });
     // console.log(req.params);
-    await status.findOneAndRemove({ _id: req.params.id });
+    await status.deleteRow();
     res.send('delete');
   } catch (e) {
     response.status(500).send({ message: e.message });
@@ -90,3 +90,23 @@ router.get('/getStatus', async (req, res) => {
   .catch((err) => console.log(err));
 
 });
+
+router.put("/putstatus", async (req, res) => {
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'แก้ไข post'
+  
+
+
+    const oldpost = await status.findOne();
+    const newpost = new status({
+        status_tun : oldpost.status_tun,
+        status_gun : oldpost.status_gun,
+        status_plus : oldpost.status_plus
+          
+      });
+      await newpost.save();
+      await status.findOneAndUpdate();
+      res.send("finish");
+  });
+module.exports = router;
+//test
