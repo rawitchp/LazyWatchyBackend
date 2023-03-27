@@ -111,13 +111,13 @@ router.get('/sort-time', async (req, res) => {
   let closestTime = '';
   if (futureTimesToday.length === 0) {
     const firstTimeTomorrow = timeObjects[0].add(1, 'day');
-    closestTime = firstTimeTomorrow.format('hh:mm');
+    closestTime = firstTimeTomorrow.format('HH:mm');
   } else {
     // Sort future times in ascending order
     futureTimesToday.sort((a, b) => a - b);
 
     // Get the first future time and format it as a string
-    closestTime = futureTimesToday[0].format('hh:mm');
+    closestTime = futureTimesToday[0].format('HH:mm');
   }
 
   // Send the closest time as response
