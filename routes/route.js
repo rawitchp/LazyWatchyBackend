@@ -142,4 +142,23 @@ router.put('/putStatus', async (req, res) => {
   await oldpost.save();
   res.send(oldpost);
 });
+
+// For Test
+///////////////////////////////////
+router.post('/gpstracking', async (req, res) => {
+  const id = req.body.gpsFixedId;
+  const latitude = req.body.lat;
+  const longitude = req.body.lng;
+  const timeStamp = req.body.timeStamp;
+  // console.log({
+  //   gpsFixedId: id,
+  //   lat: latitude,
+  //   lng: longitude,
+  //   timeStamp: timeStamp,
+  // });
+  console.log(req.body);
+  res.json({ message: 'GPS Submitted' });
+});
+//////////////////////////////////
+
 module.exports = router;
